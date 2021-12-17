@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-kapt'
 }
 
 android {
@@ -42,6 +41,11 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
 
+    //Koin dependencies - works at runtime not compile time like dagger, specific to kotlin
+    implementation "org.koin:koin-android:2.0.1"
+    implementation 'org.koin:koin-androidx-viewmodel:2.0.1'
+    implementation 'org.koin:koin-androidx-scope:2.0.1'
+
     //Coroutines implementation
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
 
@@ -58,9 +62,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
-    implementation 'com.google.dagger:dagger:2.40'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    kapt 'com.google.dagger:dagger-compiler:2.40'
 
     //ViewModel with fragment stuff
     implementation 'android.arch.lifecycle:viewmodel:1.1.1'
