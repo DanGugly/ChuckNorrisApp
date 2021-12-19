@@ -1,6 +1,9 @@
 package com.example.chucknorrisapp.di
 
+import com.example.chucknorrisapp.adapter.JokesRecyclerViewAdapter
 import com.example.chucknorrisapp.rest.NetworkApi
+import com.example.chucknorrisapp.view.ButtonFragment
+import com.example.chucknorrisapp.view.JokesFragment
 import com.example.chucknorrisapp.viewmodel.JokeViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -11,6 +14,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
+import kotlin.math.sin
 
 val networkModule = module {
     fun provideMoshi() = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
@@ -37,6 +41,12 @@ val networkModule = module {
     single { provideLoggingInterceptor() }
     single { okHttpClient(get()) }
     single { provideNetworkApi(get(), get()) }
+}
+
+val appModule = module {
+    single { JokesRecyclerViewAdapter() }
+    single { JokesFragment() }
+    single { ButtonFragment() }
 }
 
 val viewModelModule = module {

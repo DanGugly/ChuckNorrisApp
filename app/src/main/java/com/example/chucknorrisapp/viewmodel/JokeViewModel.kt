@@ -1,9 +1,11 @@
 package com.example.chucknorrisapp.viewmodel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.chucknorrisapp.rest.NetworkApi
+import com.example.chucknorrisapp.adapter.JokesRecyclerViewAdapter
+import com.example.chucknorrisapp.model.Jokes
+import com.example.chucknorrisapp.view.Contract
 import kotlinx.coroutines.*
 
 class JokeViewModel(
@@ -11,6 +13,12 @@ class JokeViewModel(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val coroutineScope : CoroutineScope = CoroutineScope(ioDispatcher)
 ) : ViewModel() {
+
+    private var contract : Contract? = null
+
+    fun initContract(contract1: Contract){
+        contract = contract1
+    }
 
     fun getRandomJoke(){
         coroutineScope.launch {
@@ -34,12 +42,15 @@ class JokeViewModel(
         coroutineScope.launch {
             try {
                 val response = jokeApi.getRandomJokes()
-                if (response.isSuccessful){
-                    response.body()?.let { jokes ->
-                        jokes.toString()
-                    } ?: Log.d("RandNEJ", "Null")
-                } else{
-                    Log.d("RandNEJ", "Issue")
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { jokes ->
+                            //jokesRecyclerViewAdapter.loadJokes(listOf(jokes))
+                            contract?.newJokes(listOf(jokes))
+                        } ?: Log.d("RandNEJ", "Null")
+                    } else {
+                        Log.d("RandNEJ", "Issue")
+                    }
                 }
             } catch (e : Exception){
                 Log.e("RandNEJ", e.stackTraceToString())

@@ -9,11 +9,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.chucknorrisapp.R
+import com.example.chucknorrisapp.adapter.JokesRecyclerViewAdapter
 import com.example.chucknorrisapp.databinding.FragmentButtonBinding
 import com.example.chucknorrisapp.viewmodel.JokeViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ButtonFragment : Fragment() {
+
+    private var jokesFragment = JokesFragment()
 
     private lateinit var binding: FragmentButtonBinding
 
@@ -30,7 +33,11 @@ class ButtonFragment : Fragment() {
             getRandomJoke()
         }
         binding.endlessJokes.setOnClickListener {
-            endlessJokes()
+            val fr = parentFragmentManager.beginTransaction()
+            fr.replace(R.id.fragment_container, jokesFragment)
+            fr.addToBackStack(JokesFragment.toString())
+            fr.commit()
+            //endlessJokes()
         }
         binding.newHeroJoke.setOnClickListener {
             newHeroJoke()
