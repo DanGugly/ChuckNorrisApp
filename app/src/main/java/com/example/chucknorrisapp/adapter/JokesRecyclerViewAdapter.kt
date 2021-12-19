@@ -27,14 +27,12 @@ class JokesRecyclerViewAdapter(
 
     fun loadJokes(jokes : List<Jokes>){
         values.addAll(jokes[0].value)
-        Log.d("Adapter", "Jokes: $values")
         notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: JokeViewHolder, position: Int) {
         val item = values[position]
         holder.idView.text = item.id.toString()
-        Log.d("Adapter", "OnBindVH: $item")
         holder.contentView.text = item.joke
     }
 

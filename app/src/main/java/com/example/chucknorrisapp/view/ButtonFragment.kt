@@ -33,10 +33,10 @@ class ButtonFragment : Fragment() {
             getRandomJoke()
         }
         binding.endlessJokes.setOnClickListener {
-            val fr = parentFragmentManager.beginTransaction()
-            fr.replace(R.id.fragment_container, jokesFragment)
-            fr.addToBackStack(JokesFragment.toString())
-            fr.commit()
+            parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, jokesFragment)
+                .addToBackStack(null)
+            .commit()
             //endlessJokes()
         }
         binding.newHeroJoke.setOnClickListener {
