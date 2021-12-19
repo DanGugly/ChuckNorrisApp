@@ -12,14 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
-val viewModelModule = module {
-    viewModel {
-        JokeViewModel(get())
-    }
-}
-
 val networkModule = module {
-
     fun provideMoshi() = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
 
     fun provideLoggingInterceptor() = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
@@ -44,4 +37,10 @@ val networkModule = module {
     single { provideLoggingInterceptor() }
     single { okHttpClient(get()) }
     single { provideNetworkApi(get(), get()) }
+}
+
+val viewModelModule = module {
+    viewModel {
+        JokeViewModel(get())
+    }
 }

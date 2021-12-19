@@ -1,16 +1,32 @@
 package com.example.chucknorrisapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.chucknorrisapp.rest.NetworkApi
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 
 class JokeViewModel(
     private val jokeApi: NetworkApi,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val coroutineScope : CoroutineScope = CoroutineScope(ioDispatcher)
 ) : ViewModel() {
+
+    fun getRandomJoke(){
+        coroutineScope.launch {
+            try {
+                val response = jokeApi.getRandomJokes()
+                if (response.isSuccessful){
+                    response.body()?.let { jokes ->
+                        jokes.toString()
+                    } ?: Log.d("RandJ", "Null")
+                } else{
+                    Log.d("RandJ", "Issue")
+                }
+            } catch (e : Exception){
+                Log.e("RandJ", e.localizedMessage)
+            }
+        }
+    }
 
     /*
     fun getAllFruits(){
