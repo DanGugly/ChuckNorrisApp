@@ -20,10 +20,6 @@ class ButtonFragment : Fragment() {
     private val viewModel by viewModel<JokeViewModel>()
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,15 +29,25 @@ class ButtonFragment : Fragment() {
         binding.randomJoke.setOnClickListener{
             getRandomJoke()
         }
+        binding.endlessJokes.setOnClickListener {
+            endlessJokes()
+        }
+        binding.newHeroJoke.setOnClickListener {
+            newHeroJoke()
+        }
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     private fun getRandomJoke(){
         viewModel.getRandomJoke()
+    }
+
+    private fun endlessJokes(){
+        viewModel.getRandomJokes()
+    }
+
+    private fun newHeroJoke(){
+        viewModel.getNewHeroJoke("eg test")
     }
 
     companion object {

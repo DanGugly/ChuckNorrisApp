@@ -42,11 +42,27 @@ class JokeViewModel(
                     Log.d("RandJ", "Issue")
                 }
             } catch (e : Exception){
-                Log.e("RandJ", e.localizedMessage)
+                Log.e("RandJ", e.stackTraceToString())
             }
         }
     }
 
+    fun getNewHeroJoke(firstLast : String){
+        coroutineScope.launch {
+            try {
+                val response = jokeApi.getNewCharJokes("Spider", "Man")
+                if (response.isSuccessful){
+                    response.body()?.let { jokes ->
+                        jokes.toString()
+                    } ?: Log.d("RandJ", "Null")
+                } else{
+                    Log.d("RandJ", "Issue")
+                }
+            } catch (e : Exception){
+                Log.e("RandJ", e.stackTraceToString())
+            }
+        }
+    }
     /*
     fun getAllFruits(){
         coroutineScope.launch {
