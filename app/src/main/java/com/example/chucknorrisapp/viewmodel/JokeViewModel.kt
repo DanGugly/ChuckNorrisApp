@@ -37,12 +37,12 @@ class JokeViewModel(
                 if (response.isSuccessful){
                     response.body()?.let { jokes ->
                         jokes.toString()
-                    } ?: Log.d("RandJ", "Null")
+                    } ?: Log.d("RandNEJ", "Null")
                 } else{
-                    Log.d("RandJ", "Issue")
+                    Log.d("RandNEJ", "Issue")
                 }
             } catch (e : Exception){
-                Log.e("RandJ", e.stackTraceToString())
+                Log.e("RandNEJ", e.stackTraceToString())
             }
         }
     }
@@ -53,46 +53,14 @@ class JokeViewModel(
                 val response = jokeApi.getNewCharJokes("Spider", "Man")
                 if (response.isSuccessful){
                     response.body()?.let { jokes ->
-                        jokes.toString()
-                    } ?: Log.d("RandJ", "Null")
+                        Log.d("RandHJ", jokes.value[0].joke)
+                    } ?: Log.d("RandHJ", "Null")
                 } else{
-                    Log.d("RandJ", "Issue")
+                    Log.d("RandHJ", "Issue")
                 }
             } catch (e : Exception){
-                Log.e("RandJ", e.stackTraceToString())
+                Log.e("RandHJ", e.stackTraceToString())
             }
         }
     }
-    /*
-    fun getAllFruits(){
-        coroutineScope.launch {
-            //Perform the task in the worker thread
-            try {
-                //Retrieve all fruits from network call
-                val response = fruitApi.retrieveAllFruits()
-                // Switch to main thread
-                withContext(Dispatchers.Main){
-                    // Whatever happens in here will happen in the main thread
-
-                }
-                if (response.isSuccessful){
-                    //Check for non nullable value of body
-                    response.body()?.let { fruits ->
-                        //Live data follows the observable pattern and is lifecycle aware
-                        // Value of body here is non nullable
-                        // Postvalue will update in the worker thread, and will be observed in the main thread by the live data
-                        _allFruits.postValue(UIState.Success(fruits))
-                        //Elvis operator on what to perform if the body is null
-                    } ?: _allFruits.postValue(UIState.Error(IllegalStateException("Body response is null")))
-                } else {
-                    _allFruits.postValue(UIState.Error(
-                        //We specifically use string instead of toString here
-                        Throwable(response.errorBody()?.string())
-                    ))
-                }
-            } catch (e: Exception){
-                _allFruits.postValue(UIState.Error(e))
-            }
-        }
-    } */
 }
