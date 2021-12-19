@@ -12,8 +12,8 @@ interface NetworkApi {
     @GET(JOKES+JOKE_COUNT)
     suspend fun getRandomJokes() : Response<Jokes>
 
-    @GET(JOKES)
-    suspend fun getRandomJoke() : Response<Value>
+    @GET(JOKES+2)
+    suspend fun getRandomJoke() : Response<Jokes>
 
     @GET(JOKES)
     suspend fun getNewCharJokes(

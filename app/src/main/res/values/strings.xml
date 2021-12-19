@@ -2,4 +2,7 @@
     <string name="app_name">ChuckNorrisApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="random_joke">Random Joke</string>
+    <string name="new_hero_joke">New Hero Joke</string>
+    <string name="never_ending_jokes">Never-ending Jokes</string>
 </resources>

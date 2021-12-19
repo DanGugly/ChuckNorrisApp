@@ -1,6 +1,7 @@
 package com.example.chucknorrisapp.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.chucknorrisapp.rest.NetworkApi
 import kotlinx.coroutines.*
@@ -12,6 +13,24 @@ class JokeViewModel(
 ) : ViewModel() {
 
     fun getRandomJoke(){
+        coroutineScope.launch {
+            try {
+                val response = jokeApi.getRandomJoke()
+                if (response.isSuccessful){
+                    response.body()?.let { jokes ->
+                        val result = jokes.value[0].joke
+                        Log.d("RandJ", "Result : $result")
+                    } ?: Log.d("RandJ", "Null")
+                } else{
+                    Log.d("RandJ", "Issue")
+                }
+            } catch (e : Exception){
+                Log.e("RandJ", e.stackTraceToString())
+            }
+        }
+    }
+
+    fun getRandomJokes(){
         coroutineScope.launch {
             try {
                 val response = jokeApi.getRandomJokes()

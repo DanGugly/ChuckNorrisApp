@@ -5,14 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.chucknorrisapp.R
+import com.example.chucknorrisapp.databinding.FragmentButtonBinding
 import com.example.chucknorrisapp.viewmodel.JokeViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ButtonFragment : Fragment() {
 
+    private lateinit var binding: FragmentButtonBinding
+
     private val viewModel by viewModel<JokeViewModel>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,13 +27,20 @@ class ButtonFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_button, container, false)
+    ): View {
+        binding = FragmentButtonBinding.inflate(inflater, container, false)
+
+        binding.randomJoke.setOnClickListener{
+            getRandomJoke()
+        }
+        return binding.root
     }
 
     override fun onResume() {
         super.onResume()
+    }
+
+    private fun getRandomJoke(){
         viewModel.getRandomJoke()
     }
 
