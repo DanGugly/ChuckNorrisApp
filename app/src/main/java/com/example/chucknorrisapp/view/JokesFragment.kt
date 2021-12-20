@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.chucknorrisapp.adapter.JokesRecyclerViewAdapter
 import com.example.chucknorrisapp.databinding.FragmentJokeListBinding
 import com.example.chucknorrisapp.model.Jokes
@@ -34,6 +35,11 @@ class JokesFragment : Fragment(), Contract {
         binding.jokeRecycler.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = jokesRecyclerViewAdapter
+        }
+        binding.swipe.setOnRefreshListener{
+            Toast.makeText(requireContext(),"Refreshing..", Toast.LENGTH_SHORT).show()
+            viewModel.getRandomJokes()
+            binding.swipe.isRefreshing = false
         }
         return binding.root
     }
