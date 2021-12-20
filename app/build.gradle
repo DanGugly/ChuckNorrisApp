@@ -41,6 +41,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
 
+    //SwipeRefreshLayout from botton
+    //SwipyRefreshLayout
+    implementation 'com.github.omadahealth:swipy:1.2.3@aar'
+
     //Koin dependencies - works at runtime not compile time like dagger, specific to kotlin
     implementation "org.koin:koin-android:2.0.1"
     implementation 'org.koin:koin-androidx-viewmodel:2.0.1'
