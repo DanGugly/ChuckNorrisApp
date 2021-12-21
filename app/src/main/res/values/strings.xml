@@ -5,4 +5,5 @@
     <string name="random_joke">Random Joke</string>
     <string name="new_hero_joke">New Hero Joke</string>
     <string name="never_ending_jokes">Never-ending Jokes</string>
+    <string name="enter_new_hero_e_g_spider_man">Enter New Hero! E.g: Spider Man</string>
 </resources>
