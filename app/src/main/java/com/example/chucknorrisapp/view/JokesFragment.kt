@@ -10,10 +10,11 @@ import android.widget.Toast
 import com.example.chucknorrisapp.adapter.JokesRecyclerViewAdapter
 import com.example.chucknorrisapp.databinding.FragmentJokeListBinding
 import com.example.chucknorrisapp.model.Jokes
+import com.example.chucknorrisapp.utils.UIState
 import com.example.chucknorrisapp.viewmodel.JokeViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class JokesFragment : Fragment(), Contract {
+class JokesFragment : Fragment() {
 
     private val viewModel by viewModel<JokeViewModel>()
 
@@ -24,13 +25,13 @@ class JokesFragment : Fragment(), Contract {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.initContract(this)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel.allJokesObserver.observe(viewLifecycleOwner, ::handleResult)
         binding = FragmentJokeListBinding.inflate(inflater, container, false)
         binding.jokeRecycler.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -49,7 +50,15 @@ class JokesFragment : Fragment(), Contract {
         viewModel.getRandomJokes()
     }
 
-    override fun newJokes(jokes: List<Jokes>){
+    private fun handleResult(result: UIState) {
+        when(result) {
+            is UIState.LOADING -> {  }
+            is UIState.SUCCESS -> { newJokes(result.jokes) }
+            is UIState.ERROR -> {  }
+        }
+    }
+
+    private fun newJokes(jokes: List<Jokes>){
         jokesRecyclerViewAdapter.loadJokes(jokes)
     }
 
@@ -57,8 +66,4 @@ class JokesFragment : Fragment(), Contract {
         @JvmStatic
         fun newInstance() = JokesFragment()
     }
-}
-
-interface Contract{
-    fun newJokes(jokes: List<Jokes>)
 }

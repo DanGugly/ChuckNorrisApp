@@ -37,7 +37,6 @@ class ButtonFragment : Fragment() {
             .replace(R.id.fragment_container, jokesFragment)
                 .addToBackStack(null)
             .commit()
-            //endlessJokes()
         }
         binding.newHeroJoke.setOnClickListener {
             newHeroJoke()
@@ -47,10 +46,6 @@ class ButtonFragment : Fragment() {
 
     private fun getRandomJoke(){
         viewModel.getRandomJoke()
-    }
-
-    private fun endlessJokes(){
-        viewModel.getRandomJokes()
     }
 
     private fun newHeroJoke(){

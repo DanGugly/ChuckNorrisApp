@@ -1,11 +1,12 @@
 package com.example.chucknorrisapp.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.chucknorrisapp.rest.NetworkApi
-import com.example.chucknorrisapp.adapter.JokesRecyclerViewAdapter
 import com.example.chucknorrisapp.model.Jokes
-import com.example.chucknorrisapp.view.Contract
+import com.example.chucknorrisapp.utils.UIState
 import kotlinx.coroutines.*
 
 class JokeViewModel(
@@ -14,10 +15,14 @@ class JokeViewModel(
     private val coroutineScope : CoroutineScope = CoroutineScope(ioDispatcher)
 ) : ViewModel() {
 
-    private var contract : Contract? = null
+    private var _allJokes: MutableLiveData<UIState> = MutableLiveData(UIState.LOADING())
+    val allJokesObserver: LiveData<UIState> get() = _allJokes
 
-    fun initContract(contract1: Contract){
-        contract = contract1
+    private var _randomJoke: MutableLiveData<Jokes?> = MutableLiveData(null)
+    val randomJokeObserver: LiveData<Jokes?> get() = _randomJoke
+
+    fun setRandomJoke(joke : Jokes){
+        _randomJoke.postValue(joke)
     }
 
     fun getRandomJoke(){
@@ -42,18 +47,14 @@ class JokeViewModel(
         coroutineScope.launch {
             try {
                 val response = jokeApi.getRandomJokes()
-                withContext(Dispatchers.Main) {
-                    if (response.isSuccessful) {
+                //withContext(Dispatchers.Main) {
                         response.body()?.let { jokes ->
-                            //jokesRecyclerViewAdapter.loadJokes(listOf(jokes))
-                            contract?.newJokes(listOf(jokes))
-                        } ?: Log.d("RandNEJ", "Null")
-                    } else {
-                        Log.d("RandNEJ", "Issue")
-                    }
-                }
+                            _allJokes.postValue(UIState.SUCCESS(listOf(jokes)))
+                        } ?: _allJokes.postValue(UIState.ERROR(Throwable("Response is null")))
+
+                //}
             } catch (e : Exception){
-                Log.e("RandNEJ", e.stackTraceToString())
+                _allJokes.postValue(UIState.ERROR(e))
             }
         }
     }
