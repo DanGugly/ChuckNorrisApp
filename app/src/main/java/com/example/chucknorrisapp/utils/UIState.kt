@@ -5,5 +5,6 @@ import com.example.chucknorrisapp.model.Jokes
 sealed class UIState{
     class LOADING(val isLoading : Boolean = true) : UIState()
     class SUCCESS(val jokes: List<Jokes>) : UIState()
+    class SUCCESS_SINGLE(val joke: Jokes) : UIState()
     class ERROR(val error: Throwable) : UIState()
 }

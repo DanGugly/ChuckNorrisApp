@@ -11,6 +11,8 @@ import androidx.fragment.app.viewModels
 import com.example.chucknorrisapp.R
 import com.example.chucknorrisapp.adapter.JokesRecyclerViewAdapter
 import com.example.chucknorrisapp.databinding.FragmentButtonBinding
+import com.example.chucknorrisapp.model.Jokes
+import com.example.chucknorrisapp.utils.UIState
 import com.example.chucknorrisapp.viewmodel.JokeViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,10 +29,12 @@ class ButtonFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel.randomJokeObserver.observe(viewLifecycleOwner, ::handleResult)
+
         binding = FragmentButtonBinding.inflate(inflater, container, false)
 
         binding.randomJoke.setOnClickListener{
-            getRandomJoke()
+            viewModel.getRandomJoke()
         }
         binding.endlessJokes.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -44,8 +48,16 @@ class ButtonFragment : Fragment() {
         return binding.root
     }
 
-    private fun getRandomJoke(){
-        viewModel.getRandomJoke()
+    private fun handleResult(uiState: UIState) {
+        when(uiState) {
+            is UIState.LOADING -> {  }
+            is UIState.SUCCESS_SINGLE -> { getRandomJoke(uiState.joke) }
+            is UIState.ERROR -> {  }
+        }
+    }
+
+    private fun getRandomJoke(joke : Jokes){
+        binding.randomJokeText.text = joke.value[0].joke
     }
 
     private fun newHeroJoke(){

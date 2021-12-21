@@ -18,27 +18,19 @@ class JokeViewModel(
     private var _allJokes: MutableLiveData<UIState> = MutableLiveData(UIState.LOADING())
     val allJokesObserver: LiveData<UIState> get() = _allJokes
 
-    private var _randomJoke: MutableLiveData<Jokes?> = MutableLiveData(null)
-    val randomJokeObserver: LiveData<Jokes?> get() = _randomJoke
+    private var _randomJoke: MutableLiveData<UIState> = MutableLiveData(null)
+    val randomJokeObserver: LiveData<UIState> get() = _randomJoke
 
-    fun setRandomJoke(joke : Jokes){
-        _randomJoke.postValue(joke)
-    }
 
     fun getRandomJoke(){
         coroutineScope.launch {
             try {
                 val response = jokeApi.getRandomJoke()
-                if (response.isSuccessful){
-                    response.body()?.let { jokes ->
-                        val result = jokes.value[0].joke
-                        Log.d("RandJ", "Result : $result")
-                    } ?: Log.d("RandJ", "Null")
-                } else{
-                    Log.d("RandJ", "Issue")
-                }
+                response.body()?.let { jokes ->
+                    _randomJoke.postValue(UIState.SUCCESS_SINGLE(jokes))
+                } ?: _randomJoke.postValue(UIState.ERROR(Throwable("Response is null")))
             } catch (e : Exception){
-                Log.e("RandJ", e.stackTraceToString())
+                _randomJoke.postValue(UIState.ERROR(e))
             }
         }
     }
@@ -47,12 +39,9 @@ class JokeViewModel(
         coroutineScope.launch {
             try {
                 val response = jokeApi.getRandomJokes()
-                //withContext(Dispatchers.Main) {
                         response.body()?.let { jokes ->
                             _allJokes.postValue(UIState.SUCCESS(listOf(jokes)))
                         } ?: _allJokes.postValue(UIState.ERROR(Throwable("Response is null")))
-
-                //}
             } catch (e : Exception){
                 _allJokes.postValue(UIState.ERROR(e))
             }
