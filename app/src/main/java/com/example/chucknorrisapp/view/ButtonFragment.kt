@@ -20,6 +20,8 @@ class ButtonFragment : Fragment() {
 
     private var jokesFragment = JokesFragment()
 
+    private var heroFragment = NewHeroFragment()
+
     private lateinit var binding: FragmentButtonBinding
 
     private val viewModel by viewModel<JokeViewModel>()
@@ -43,7 +45,10 @@ class ButtonFragment : Fragment() {
             .commit()
         }
         binding.newHeroJoke.setOnClickListener {
-            newHeroJoke()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, heroFragment)
+                .addToBackStack(null)
+                .commit()
         }
         return binding.root
     }
@@ -58,10 +63,6 @@ class ButtonFragment : Fragment() {
 
     private fun getRandomJoke(joke : Jokes){
         binding.randomJokeText.text = joke.value[0].joke
-    }
-
-    private fun newHeroJoke(){
-        viewModel.getNewHeroJoke("eg test")
     }
 
     companion object {
