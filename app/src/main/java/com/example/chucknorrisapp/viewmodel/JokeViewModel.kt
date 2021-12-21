@@ -1,11 +1,9 @@
 package com.example.chucknorrisapp.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.chucknorrisapp.rest.NetworkApi
-import com.example.chucknorrisapp.model.Jokes
 import com.example.chucknorrisapp.utils.UIState
 import kotlinx.coroutines.*
 
@@ -21,6 +19,8 @@ class JokeViewModel(
     private var _randomJoke: MutableLiveData<UIState> = MutableLiveData(null)
     val randomJokeObserver: LiveData<UIState> get() = _randomJoke
 
+    private var _heroJoke: MutableLiveData<UIState> = MutableLiveData(null)
+    val heroJokeObserver: LiveData<UIState> get() = _heroJoke
 
     fun getRandomJoke(){
         coroutineScope.launch {
@@ -48,19 +48,15 @@ class JokeViewModel(
         }
     }
 
-    fun getNewHeroJoke(firstLast : String){
+    fun getNewHeroJoke(first: String, last: String){
         coroutineScope.launch {
             try {
-                val response = jokeApi.getNewCharJokes("Spider", "Man")
-                if (response.isSuccessful){
-                    response.body()?.let { jokes ->
-                        Log.d("RandHJ", jokes.value[0].joke)
-                    } ?: Log.d("RandHJ", "Null")
-                } else{
-                    Log.d("RandHJ", "Issue")
-                }
+                val response = jokeApi.getNewCharJokes(first, last)
+                response.body()?.let { jokes ->
+                    _heroJoke.postValue(UIState.SUCCESS_SINGLE(jokes))
+                } ?: _heroJoke.postValue(UIState.ERROR(Throwable("Response is null")))
             } catch (e : Exception){
-                Log.e("RandHJ", e.stackTraceToString())
+                _heroJoke.postValue(UIState.ERROR(e))
             }
         }
     }

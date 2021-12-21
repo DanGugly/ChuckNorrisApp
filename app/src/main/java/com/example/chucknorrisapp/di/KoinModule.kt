@@ -4,6 +4,7 @@ import com.example.chucknorrisapp.adapter.JokesRecyclerViewAdapter
 import com.example.chucknorrisapp.rest.NetworkApi
 import com.example.chucknorrisapp.view.ButtonFragment
 import com.example.chucknorrisapp.view.JokesFragment
+import com.example.chucknorrisapp.view.NewHeroFragment
 import com.example.chucknorrisapp.viewmodel.JokeViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -47,6 +48,7 @@ val appModule = module {
     single { JokesRecyclerViewAdapter() }
     single { JokesFragment() }
     single { ButtonFragment() }
+    single { NewHeroFragment() }
 }
 
 val viewModelModule = module {
