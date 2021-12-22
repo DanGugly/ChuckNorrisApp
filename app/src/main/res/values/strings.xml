@@ -6,4 +6,6 @@
     <string name="new_hero_joke">New Hero Joke</string>
     <string name="never_ending_jokes">Never-ending Jokes</string>
     <string name="enter_new_hero_e_g_spider_man">Enter New Hero! E.g: Spider Man</string>
+    <string name="explicit_jokes">Explicit Jokes</string>
+    <string name="non_explicit_jokes">Non-Explicit Jokes</string>
 </resources>

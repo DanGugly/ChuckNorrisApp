@@ -1,6 +1,7 @@
 package com.example.chucknorrisapp.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,15 @@ class NewHeroFragment : Fragment() {
 
     private lateinit var binding: FragmentNewHeroBinding
 
+    private var explicit : Boolean? = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            explicit = it.getBoolean("ExplicitVal")
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,7 +42,8 @@ class NewHeroFragment : Fragment() {
             } else{
                 Toast.makeText(
                     requireContext(),
-                    "Please enter in format of FirstName LastName..",
+                    "Please enter in format of Firstname Lastname..\n" +
+                            "No special characters allowed!",
                     Toast.LENGTH_LONG).show()
             }
         }
@@ -40,7 +51,7 @@ class NewHeroFragment : Fragment() {
     }
 
     private fun getNewHero(first: String, last: String){
-        viewModel.getNewHeroJoke(first, last)
+        explicit?.let { viewModel.getNewHeroJoke(first, last, it) }
     }
 
     private fun handleResult(uiState: UIState) {
@@ -57,6 +68,6 @@ class NewHeroFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = NewHeroFragment()
+        fun newInstance(nonExplicit : Boolean) = NewHeroFragment()
     }
 }

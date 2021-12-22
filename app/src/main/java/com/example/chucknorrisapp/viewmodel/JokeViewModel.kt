@@ -22,10 +22,14 @@ class JokeViewModel(
     private var _heroJoke: MutableLiveData<UIState> = MutableLiveData(null)
     val heroJokeObserver: LiveData<UIState> get() = _heroJoke
 
-    fun getRandomJoke(){
+    fun getRandomJoke(nonExplicit : Boolean){
         coroutineScope.launch {
             try {
-                val response = jokeApi.getRandomJoke()
+                val response = if (nonExplicit){
+                    jokeApi.getRandomJokeClean()
+                } else{
+                    jokeApi.getRandomJoke()
+                }
                 response.body()?.let { jokes ->
                     _randomJoke.postValue(UIState.SUCCESS_SINGLE(jokes))
                 } ?: _randomJoke.postValue(UIState.ERROR(Throwable("Response is null")))
@@ -35,11 +39,15 @@ class JokeViewModel(
         }
     }
 
-    fun getRandomJokes(){
+    fun getRandomJokes(nonExplicit: Boolean){
         coroutineScope.launch {
             try {
-                val response = jokeApi.getRandomJokes()
-                        response.body()?.let { jokes ->
+                val response = if (nonExplicit){
+                    jokeApi.getRandomJokesClean()
+                } else{
+                    jokeApi.getRandomJokes()
+                }
+                response.body()?.let { jokes ->
                             _allJokes.postValue(UIState.SUCCESS(listOf(jokes)))
                         } ?: _allJokes.postValue(UIState.ERROR(Throwable("Response is null")))
             } catch (e : Exception){
@@ -48,10 +56,14 @@ class JokeViewModel(
         }
     }
 
-    fun getNewHeroJoke(first: String, last: String){
+    fun getNewHeroJoke(first: String, last: String, nonExplicit: Boolean){
         coroutineScope.launch {
             try {
-                val response = jokeApi.getNewCharJokes(first, last)
+                val response = if (nonExplicit){
+                    jokeApi.getNewCharJokesClean(first, last)
+                } else{
+                    jokeApi.getNewCharJokes(first, last)
+                }
                 response.body()?.let { jokes ->
                     _heroJoke.postValue(UIState.SUCCESS_SINGLE(jokes))
                 } ?: _heroJoke.postValue(UIState.ERROR(Throwable("Response is null")))

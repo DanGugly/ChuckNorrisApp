@@ -1,6 +1,7 @@
 package com.example.chucknorrisapp.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,8 @@ class ButtonFragment : Fragment() {
 
     private val viewModel by viewModel<JokeViewModel>()
 
+    private var explicit : Boolean = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,16 +38,30 @@ class ButtonFragment : Fragment() {
 
         binding = FragmentButtonBinding.inflate(inflater, container, false)
 
+        binding.checkBox.setOnClickListener{
+            explicit = binding.checkBox.isChecked
+        }
+
         binding.randomJoke.setOnClickListener{
-            viewModel.getRandomJoke()
+            viewModel.getRandomJoke(explicit)
         }
         binding.endlessJokes.setOnClickListener {
+            jokesFragment.apply {
+                arguments = Bundle().apply {
+                    putBoolean("ExplicitVal", explicit)
+                }
+            }
             parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, jokesFragment)
+                .replace(R.id.fragment_container, jokesFragment)
                 .addToBackStack(null)
-            .commit()
+                .commit()
         }
         binding.newHeroJoke.setOnClickListener {
+            heroFragment.apply {
+                arguments = Bundle().apply {
+                    putBoolean("ExplicitVal", explicit)
+                }
+            }
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, heroFragment)
                 .addToBackStack(null)
