@@ -1,14 +1,13 @@
 package com.example.chucknorrisapp.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.chucknorrisapp.databinding.FragmentNewHeroBinding
-import com.example.chucknorrisapp.model.Jokes
+import com.example.chucknorrisapp.model.SingleJoke
 import com.example.chucknorrisapp.utils.UIState
 import com.example.chucknorrisapp.utils.validateHero
 import com.example.chucknorrisapp.viewmodel.JokeViewModel
@@ -19,15 +18,6 @@ class NewHeroFragment : Fragment() {
     private val viewModel by viewModel<JokeViewModel>()
 
     private lateinit var binding: FragmentNewHeroBinding
-
-    private var explicit : Boolean? = false
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            explicit = it.getBoolean("ExplicitVal")
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +41,7 @@ class NewHeroFragment : Fragment() {
     }
 
     private fun getNewHero(first: String, last: String){
-        explicit?.let { viewModel.getNewHeroJoke(first, last, it) }
+        viewModel.getNewHeroJoke(first, last)
     }
 
     private fun handleResult(uiState: UIState) {
@@ -62,12 +52,12 @@ class NewHeroFragment : Fragment() {
         }
     }
 
-    private fun getHeroJoke(joke : Jokes){
-        binding.newHeroJoke.text = joke.value[0].joke
+    private fun getHeroJoke(joke : SingleJoke){
+        binding.newHeroJoke.text = joke.value.joke
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(nonExplicit : Boolean) = NewHeroFragment()
+        fun newInstance() = NewHeroFragment()
     }
 }

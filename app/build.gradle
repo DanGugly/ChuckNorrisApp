@@ -43,6 +43,10 @@ dependencies {
 
     //SwipeRefreshLayout from botton
     //SwipyRefreshLayout
+
+    // the use of other libraries are very welcome
+    // we need to take care which libraries we are using
+    // some libraries not supported by google are dangerous to the project
     implementation 'com.github.omadahealth:swipy:1.2.3@aar'
 
     //Koin dependencies - works at runtime not compile time like dagger, specific to kotlin

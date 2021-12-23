@@ -4,20 +4,23 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout
-        android:id="@+id/swipe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srl_direction="bottom">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/joke_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </androidx.recyclerview.widget.RecyclerView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/joke_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+<!--    <com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout-->
+<!--        android:id="@+id/swipe"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:srl_direction="bottom">-->
 
-        </androidx.recyclerview.widget.RecyclerView>
+<!--        -->
 
-    </com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout>
+<!--        -->
+
+<!--    </com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout>-->
 
 
 </FrameLayout>
